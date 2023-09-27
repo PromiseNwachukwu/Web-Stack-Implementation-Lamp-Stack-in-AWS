@@ -1,8 +1,11 @@
-![Screenshot from 2023-09-27 01-02-39](https://github.com/PromiseNwachukwu/Web-Stack-Implementation-Lamp-Stack-in-AWS/assets/109115304/cb696fbb-b8c4-4bed-8423-0b372f18f36e)# WEB STACK IMPLEMENTATION (LAMP STACK) IN AWS
+# WEB STACK IMPLEMENTATION (LAMP STACK) IN AWS
 
-## LAMP STACK 
-
-## LAMP (Linux- Operating System, Apache- Web Sever, MySQL- Data base, PHP or Python, or Perl- ) 
+# LAMP STACK 
+### The LAMP stack is a popular and widely used software stack for building and deploying web applications. It's an acronym that stands for:
+###    1. Linux: This refers to the operating system on which the web application will be hosted. Linux is chosen for its stability, security, and open-source nature.
+###    2. Apache: Apache HTTP Server (commonly referred to as Apache) is a powerful and widely used web server software. It handles the serving of web pages, processing requests from users' browsers, and directing them to the appropriate files on the server.
+###    3. MySQL: MySQL is a popular open-source relational database management system (RDBMS) that stores and manages the data for the web application. It's used for storing information such as user data, content, configurations, and more.
+###    4. PHP: PHP stands for Hypertext Preprocessor. It's a scripting language that is often used for server-side programming to generate dynamic web content. PHP scripts are executed on the server and can interact with the database, handle user input, and generate HTML for web pages.
 
 # Step 0 - Preparing prerequisites
 ## Connecting to an AWS ubuntu server.
@@ -31,6 +34,8 @@ $ sudo systemctl status apache2
 ## Before we can receive any traffic by our Web Server, we need to open TCP port 80 which is the default port that web browsers use to access web pages on the Internet
 ![Screenshot from 2023-09-18 02-21-26](https://github.com/PromiseNwachukwu/my-portfolio1/assets/109115304/bd237cce-dda3-4c51-b88b-d4df906ac185)
 
+## To confirm that our Apache HTTP server can be accessed locally in our Ubuntu shell, and can respond to requests from the Internet
+### Accessing our server locally in our Ubuntu shell.
 $ curl http://localhost:80
 ![Screenshot from 2023-09-18 02-23-30](https://github.com/PromiseNwachukwu/my-portfolio1/assets/109115304/135ddf7c-4137-431c-8562-62f5fba07830)
 
@@ -69,87 +74,93 @@ $ sudo mysql -p
 $ mysql> exit
 ![Screenshot from 2023-09-18 14-48-18](https://github.com/PromiseNwachukwu/DevOps-Projects-Darey.io/assets/109115304/b55d7a91-5792-4196-8ccb-19d6b65d0727)
 
+### MySQL is confirmed to have been installed and ready to use.
 
 # Step 3 - Installing PHP
-## PHP processes codes to display dynamic contents to the end user. It works with php-mysql; a PHP module that allows PHP to communicate with MySQL-based databases, libapache2-mod-php whcih enable Apache to handle PHP files and Core PHP packages which are automatically installed as dependencies.
-To install these 3 packages at once, run:
+## For PHP processes codes to display dynamic contents to the end user. It works with php-mysql; a PHP module that allows PHP to communicate with MySQL-based databases, libapache2-mod-php whcih enable Apache to handle PHP files and Core PHP packages which are automatically installed as dependencies.
+### To install these 3 packages at once, run:
 $ sudo apt install php libapache2-mod-php php-mysql
 ![Screenshot from 2023-09-18 14-59-36](https://github.com/PromiseNwachukwu/DevOps-Projects-Darey.io/assets/109115304/d0f52524-5358-4ee7-9cb2-b6437f2ca634)
 
+## To confirm the version of PHP installed.
 $ php -v
 ![Screenshot from 2023-09-18 15-00-05](https://github.com/PromiseNwachukwu/DevOps-Projects-Darey.io/assets/109115304/1804ba92-d4b4-4e44-9199-1bcb242e9b00)
 ## The LAMP stack is now fully installed and confirmed operational.
 
 
-
-
-
-
-# Step 4 — Creating a Virtual Host for your Website using Apache
-In this project, you will set up a domain called projectlamp, but you can replace this with any domain of your choice.
-Apache on Ubuntu 20.04 has one server block enabled by default that is configured to serve documents from the /var/www/html directory. We will leave this configuration as is and will add our own directory next next to the default one.
-Create the directory for projectlamp using 'mkdir' command as follows:
+# Step 4 — Creating/configuring a Virtual Host for your Website using Apache
+## To set up a domain called "projectlamp", Apache on Ubuntu 20.04 has one server block enabled by default that is configured to serve documents from the /var/www/html directory. We will leave this configuration as is and will add our own directory next to the default one.
+### To create the directory for projectlamp using 'mkdir' command as follows:
 $ sudo mkdir /var/www/projectlamp
 ![Screenshot from 2023-09-27 00-24-41](https://github.com/PromiseNwachukwu/my-portfolio1/assets/109115304/87d957c0-a603-494e-9657-00100cf99e37)
 
-Assign ownership of the directory with the $USER environment variable, which will reference your current system user:
+## Assign ownership of the directory with the $USER environment variable, which will reference your current system user:
 $ sudo chown -R $USER:$USER /var/www/projectlamp
-Then, create and open a new configuration file in Apache’s sites-available directory using your preferred command-line editor. Here, we’ll be using vi or vim (They are the same by the way):
+### Then, create and open a new configuration file in Apache’s sites-available directory using your preferred command-line editor. with the use of vim.
 $ sudo vi /etc/apache2/sites-available/projectlamp.conf
-This will create a new blank file. Paste in the following bare-bones configuration by hitting on i on the keyboard to enter the insert mode, and paste the text:
 ![Screenshot from 2023-09-27 00-32-37](https://github.com/PromiseNwachukwu/my-portfolio1/assets/109115304/cc19a0bc-ef63-4b23-ad86-e8457b408879)
 
-1c3e-4425-8ba3-c9a582ab3580)
+### This will create a new blank file. Paste in the following bare-bones configuration:
+$ <VirtualHost *:80>
+
+$    ServerName projectlamp
+
+$    ServerAlias www.projectlamp 
+
+$    ServerAdmin webmaster@localhost
+
+$    DocumentRoot /var/www/projectlamp
+
+$    ErrorLog ${APACHE_LOG_DIR}/error.log
+
+$    CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+$ </VirtualHost>
+
+
 ![Screenshot from 2023-09-27 00-29-21](https://github.com/PromiseNwachukwu/my-portfolio1/assets/109115304/c6877dcf-0024-4a01-89e7-4b3fbd0c5e87)
 
-To save and close the file, simply follow the steps below:
-    1. Hit the esc button on the keyboard 
-    2. Type : 
-    3. Type wq. w for write and q for quit 
-    4. Hit ENTER to save the file 
-You can use the ls command to show the new file in the sites-available directory
+
+## To show the new file in the sites-available directory.
 $ sudo ls /etc/apache2/sites-available
 ![Screenshot from 2023-09-27 00-34-54](https://github.com/PromiseNwachukwu/my-portfolio1/assets/109115304/4f6601a4-89f8-4a6d-83cb-886233766117)
 
 
-With this VirtualHost configuration, we’re telling Apache to serve projectlamp using /var/www/projectlampl as its web root directory. If you would like to test Apache without a domain name, you can remove or comment out the options ServerName and ServerAlias by adding a # character in the beginning of each option’s lines. Adding the # character there will tell the program to skip processing the instructions on those lines.
-You can now use a2ensite command to enable the new virtual host:
+### With this VirtualHost configuration, we’re telling Apache to serve projectlamp using /var/www/projectlampl as its web root directory. 
+
+## To enable the new virtual host using a2ensite command:
 $ sudo a2ensite projectlamp
 
 
-You might want to disable the default website that comes installed with Apache. This is required if you’re not using a custom domain name, because in this case Apache’s default configuration would overwrite your virtual host. To disable Apache’s default website use a2dissite command , type:
+## To disable Apache’s default website use a2dissite command , type:
 $ sudo a2dissite 000-default
 ![Screenshot from 2023-09-27 00-37-57](https://github.com/PromiseNwachukwu/my-portfolio1/assets/109115304/c30ab112-984b-4ea5-9df5-ca0ddac12301)
 
-To make sure your configuration file doesn’t contain syntax errors, run:
+# To make sure your configuration file doesn’t contain syntax errors, run:
 $ sudo apache2ctl configtest
-Finally, reload Apache so these changes take effect:
+
+# Finally, reloading Apache so these changes take effect:
 $ sudo systemctl reload apache2
-Your new website is now active, but the web root /var/www/projectlamp is still empty. Create an index.html file in that location so that we can test that the virtual host works as expected:
+![Screenshot from 2023-09-27 00-44-30](https://github.com/PromiseNwachukwu/my-portfolio1/assets/109115304/7f5c28c5-bef9-4568-912c-9895c1023290)
+
+
+## The new website is now active, with an empty web root /var/www/projectlamp.
+### To create an index.html file in that location so that we can test that the virtual host works as expected:
 $ sudo echo 'Hello LAMP from hostname' $(curl -s http://169.254.169.254/latest/meta-data/public-hostname) 'with public IP' $(curl -s http://169.254.169.254/latest/meta-data/public-ipv4) > /var/www/projectlamp/index.html
 ![Screenshot from 2023-09-27 00-44-30](https://github.com/PromiseNwachukwu/my-portfolio1/assets/109115304/575e99e1-e105-4aed-a883-3eb700344459)
 
-Now go to your browser and try to open your website URL using IP address:
+## To open our new website URL using IP address through a browser.
 $ http://<Public-IP-Address>:80
 ![Screenshot from 2023-09-27 00-49-56](https://github.com/PromiseNwachukwu/my-portfolio1/assets/109115304/49b44a84-f91f-44b4-87b4-dae55aefea2d)
 
-If you see the text from 'echo' command you wrote to index.html file, then it means your Apache virtual host is working as expected. In the output you will see your server's public hostname (DNS name) and public IP address. You can also access your website in your browser by public DNS name, not only by IP - try it out, the result must be the same (port is optional)
+## To open our new website URL using public DNS name through a browser.
 $ http://<Public-DNS-Name>:80
 ![Screenshot from 2023-09-27 00-53-30](https://github.com/PromiseNwachukwu/my-portfolio1/assets/109115304/1b8ae080-81dc-4365-8ad3-0637878e7b8a)  
 
-You can leave this file in place as a temporary landing page for your application until you set up an index.php file to replace it. Once you do that, remember to remove or rename the index.html file from your document root, as it would take precedence over an index.php file by default.
-
-
 
 # Step 5 — Enable PHP on the website
-
-$ sudo vim /etc/apache2/mods-enabled/dir.conf
-![Screenshot from 2023-09-25 22-37-55](https://github.com/PromiseNwachukwu/my-portfolio1/assets/109115304/a1f0a789-1242-41d9-a611-084cee798d0a)
-
-## After saving and closing the file, you will need to reload Apache so the changes take effect:
-$ sudo systemctl reload apache2
-![Screenshot from 2023-09-25 23-27-38](https://github.com/PromiseNwachukwu/my-portfolio1/assets/109115304/81807ba4-c1e1-4c70-9a7a-ba942827a68b)
-
+## With the default DirectoryIndex settings on Apache, a file named index.html will always take precedence over an index.php file. 
+## To edit the /etc/apache2/mods-enabled/dir.conf file and change the order in which the index.php file is listed within the DirectoryIndex directive and make it the default landing page for the application
 ## To edit the DrectoryIndex for index.php file to take precedence over the index.html file.
 $ sudo vim /etc/apache2/mods-enabled/dir.conf
 ![Screenshot from 2023-09-25 22-34-57](https://github.com/PromiseNwachukwu/my-portfolio1/assets/109115304/ba339da6-3ed7-4dbf-80da-67eb68ea69a0)
@@ -162,10 +173,19 @@ $ sudo systemctl reload apache2
 $ sudo mkdir /var/www/projectlamp
 ![Screenshot from 2023-09-25 23-27-38](https://github.com/PromiseNwachukwu/my-portfolio1/assets/109115304/5a15d7fc-c6f4-4803-bd86-ab99ac73e09b)
 
+## To open a blank file and add PHP code.
+$ <?php
+$ phpinfo();
 
 $ vim /var/www/projectlamp/index.php
+![Screenshot from 2023-09-21 22-42-57](https://github.com/PromiseNwachukwu/my-portfolio1/assets/109115304/75659beb-4a39-41ec-a430-549a1e12ba3c)
+
+## TO confirm that the configuration is done, refresh the webpage after saving.
 ![Screenshot from 2023-09-27 01-02-39](https://github.com/PromiseNwachukwu/my-portfolio1/assets/109115304/295a2984-fb55-4655-912c-cb7215b235cf)
 
-$ sudo chown -R $USER:$USER /var/www/projectlamp
-![Screenshot from 2023-09-26 00-25-08](https://github.com/PromiseNwachukwu/my-portfolio1/assets/109115304/1d6a54af-7d69-4252-81fc-69fc1e0dee6f)
+## After checking the relevant information about your PHP server through that page, it’s best to remove the file you created as it contains sensitive information about your PHP environment -and your Ubuntu server. Run the following command.
+$ sudo rm /var/www/projectlamp/index.php
+![Screenshot from 2023-09-25 23-46-08](https://github.com/PromiseNwachukwu/my-portfolio1/assets/109115304/7ea50472-9cd5-4b06-8793-e15b338586b7)
+
+## This completes the project.
 
